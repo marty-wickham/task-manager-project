@@ -1,5 +1,6 @@
 # os is needed for environment variables, to set up our IP address and PORT number
 import os
+import env
 from flask import Flask, render_template, redirect, request, url_for
 from flask_pymongo import PyMongo
 # MongoDB stores its data in a JSON like format called BSON.
@@ -10,8 +11,12 @@ app = Flask(__name__)
 
 # Add some configuration to our Flask application, the Mongo database
 # name and the URL linking to that database.
-app.config["MONGO_DBNAME"] = 'mongodb-task-manager'
-app.config["MONGO_URI"] = os.getenv('MONGO_URI', '....')
+MONGO_URI = os.getenv('MONGO_URI')
+
+app.config["MONGO_DBNAME"] = 'task-manager'
+app.config["MONGO_URI"] = MONGO_URI
+
+print("Your Mongo URI is " + str(MONGO_URI))
 
 # Create an instance of PyMongo. We'll add the app into that with what's called a constructor method.
 # Our app object is the argument.
