@@ -38,7 +38,17 @@ def get_tasks():
 
 @app.route('/add_task')
 def add_task():
-    return render_template("add-task.html")
+    return render_template("add-task.html", categories=mongo.db.categories.find())
+
+# Because we are submitting a form, we must refer to the HHTP method that will be used to deliver the form data
+# The default is 'GET'. It's only if 'POST' submisiion format is used we must specify.
+@app.route('/insert_task', methods=['POST'])
+def insert_task():
+    tasks = mongo.db.tasks
+    # When information is submitted to some web location, it is submittef in the form of a request object.
+    # Converting form to a dictionary so it can be understood by mongo
+    tasks.insert_one(request.form.to_dict())
+    return redirect(url_for('get_tasks'))
 
 # set up our IP address and our port number so that Gitpod knows how to run and where to run our application.
 if __name__ == '__main__':
