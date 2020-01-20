@@ -1,19 +1,33 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet"  href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 </head>
+
 <body>
-        {% block content %}
-        {% endblock %}
-        <!-- Good practice to put jQuery at the bottom of the <body> element to ensure the HTML elements have been fully rendered before any JavaScript activity or functions target those elements that have been rendered. -->
-        <!-- Place the jQuery before the Materialize because jQuery needs to be active before Materialize uses that functionality. -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-            $('.collapsible').collapsible();})
-        </script>
+	{% block content %}
+	{% endblock %}
+	<!-- Good practice to put jQuery at the bottom of the <body> element to ensure the HTML elements have been fully rendered before any JavaScript activity or functions target those elements that have been rendered. -->
+	<!-- Place the jQuery before the Materialize because jQuery needs to be active before Materialize uses that functionality. -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+            $('.collapsible').collapsible();
+        });
+        
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year,
+            today: 'Today',
+            clear: 'Clear',
+            close: 'Ok',
+            closeOnSelect: false // Close upon selecting a date,
+        });
+	</script>
 </body>
+
 </html>

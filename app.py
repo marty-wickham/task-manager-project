@@ -16,8 +16,6 @@ MONGO_URI = os.getenv('MONGO_URI')
 app.config["MONGO_DBNAME"] = 'task-manager'
 app.config["MONGO_URI"] = MONGO_URI
 
-print("Your Mongo URI is " + str(MONGO_URI))
-
 # Create an instance of PyMongo. We'll add the app into that with what's called a constructor method.
 # Our app object is the argument.
 mongo = PyMongo(app)
@@ -37,6 +35,10 @@ def get_tasks():
     # mongo.db.tasks is our collection.
     # The find() method will return everything in our tasks collection. 
     return render_template("tasks.html", tasks=mongo.db.tasks.find())
+
+@app.route('/add_task')
+def add_task():
+    return render_template("add-task.html")
 
 # set up our IP address and our port number so that Gitpod knows how to run and where to run our application.
 if __name__ == '__main__':
