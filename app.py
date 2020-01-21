@@ -36,19 +36,94 @@ def get_tasks():
     # The find() method will return everything in our tasks collection. 
     return render_template("tasks.html", tasks=mongo.db.tasks.find())
 
+
 @app.route('/add_task')
 def add_task():
     return render_template("add-task.html", categories=mongo.db.categories.find())
+
 
 # Because we are submitting a form, we must refer to the HHTP method that will be used to deliver the form data
 # The default is 'GET'. It's only if 'POST' submisiion format is used we must specify.
 @app.route('/insert_task', methods=['POST'])
 def insert_task():
     tasks = mongo.db.tasks
-    # When information is submitted to some web location, it is submittef in the form of a request object.
+    # When information is submitted to some web location, it is submitted in the form of a request object.
     # Converting form to a dictionary so it can be understood by mongo
     tasks.insert_one(request.form.to_dict())
+
     return redirect(url_for('get_tasks'))
+
+
+@app.route('/edit_task/<task_id>')
+def edit_task(task_id):
+    the_task = mongo.db.tasks.find_one({"_id": ObjectId(task_id)})
+    all_categories = mongo.db.categories.find()
+
+    return render_template("edit-task.html", task=the_task, categories=all_categories)
+
+
+@app.route('/update_task/<task_id>', methods=['POST'])
+def update_task(task_id):
+    tasks = mongo.db.tasks
+    tasks.update(
+        {'_id': ObjectId(task_id)},
+        {'task_name': request.form.get('task_name'),
+         'category_name': request.form.get('category_name'),
+         'task_description': request.form.get('task_description'),
+         'due_date': request.form.get('due_date'),
+         'is_urgent': request.form.get('is_urgent')})
+
+    return redirect(url_for('get_tasks'))
+
+
+@app.route('/delete_task/<task_id>')
+def delete_task(task_id):
+    mongo.db.tasks.remove({'_id': ObjectId(task_id)})
+
+    return redirect(url_for('get_tasks'))
+
+
+@app.route('/get_categories')
+def get_categories():
+
+    return render_template('categories.html', categories=mongo.db.categories.find())
+
+
+@app.route('/edit_category/<category_id>')
+def edit_category(category_id):
+    
+    return render_template('edit-category.html', category=mongo.db.categories.find_one({'_id': ObjectId(category_id)}))
+
+
+@app.route('/update_category/<category_id>', methods=['POST'])
+def update_category(category_id):
+    mongo.db.categories.update(
+        {'_id': ObjectId(category_id)},
+        {'category_name': request.form.get('category_name')})
+
+    return redirect(url_for('get_categories'))
+
+
+@app.route('/delete_category/<category_id>')
+def delete_category(category_id):
+    mongo.db.categories.remove({'_id': ObjectId(category_id)})
+
+    return redirect(url_for('get_categories'))
+
+
+@app.route('/add_category')
+def add_category():
+    return render_template('add-category.html')
+
+
+@app.route('/insert_category', methods=['POST'])
+def insert_category():
+    categories = mongo.db.categories.find()
+    new_doc = {'category_name': request.form.get('category_name')}
+    mongo.db.categories.insert(new_doc)
+
+    return redirect(url_for('get_categories'))
+
 
 # set up our IP address and our port number so that Gitpod knows how to run and where to run our application.
 if __name__ == '__main__':
