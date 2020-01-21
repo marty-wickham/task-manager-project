@@ -1,6 +1,8 @@
 # os is needed for environment variables, to set up our IP address and PORT number
 import os
-import env
+from os import path 
+if path.exists("env.py"):
+    import env
 from flask import Flask, render_template, redirect, request, url_for
 from flask_pymongo import PyMongo
 # MongoDB stores its data in a JSON like format called BSON.
