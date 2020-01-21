@@ -11,10 +11,9 @@ app = Flask(__name__)
 
 # Add some configuration to our Flask application, the Mongo database
 # name and the URL linking to that database.
-MONGO_URI = os.getenv('MONGO_URI')
 
 app.config["MONGO_DBNAME"] = 'task-manager'
-app.config["MONGO_URI"] = MONGO_URI
+app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb://localhost')
 
 # Create an instance of PyMongo. We'll add the app into that with what's called a constructor method.
 # Our app object is the argument.
